@@ -4,6 +4,7 @@ import pickle
 
 client = de.Client(headers={'Accept-Language': 'en'})
 
+# we will collect covers from artists of these 8 deezer genres
 all_genres = {
     'Jazz': 0,
     'R&B': 1,
@@ -15,6 +16,18 @@ all_genres = {
     'Electro': 7
 }
 
+# HINT: Code for collecting ids of each deezer genre
+# deezer_genres = client.list_genres()
+# print(deezer_genres)
+
+# deezer_genres_ids = {}
+#
+# for genre in all_genres:
+#     for deezer_genre in deezer_genres:
+#         if genre == deezer_genre.name:
+#             deezer_genres_ids[genre] = deezer_genre.id
+
+# ID's I've collected when writing code
 deezer_genres_ids = {'Jazz': 129,
                      'R&B': 165,
                      'Pop': 132,
@@ -24,29 +37,16 @@ deezer_genres_ids = {'Jazz': 129,
                      'Metal': 464,
                      'Electro': 106}
 
-# deezer_genres = client.list_genres()
-# print(deezer_genres)
 
-# deezer_genres_ids_dict = {}
-#
-# for genre in all_genres:
-#     for deezer_genre in deezer_genres:
-#         if genre == deezer_genre.name:
-#             deezer_genres_ids_dict[genre] = deezer_genre.id
-
-genre_artists_dict = {}
+genre_artists_dict = {}  # dict to store artists of each genre
 
 for genre in deezer_genres_ids:
     genre_id = deezer_genres_ids.get(genre)
 
     genre_artists_dict[genre] = client.get_genre(genre_id).get_artists()
 
-    time.sleep(0.3)
+    time.sleep(0.3)  # sleep is necessary to not exceed limit of API calls
 
-with open("artists_folder/ru_artists.pkl", "wb") as f:
+with open("artists_folder/all_artists.pkl", "wb") as f:
+    # save pickle of dict for the future
     pickle.dump(genre_artists_dict, f, protocol=pickle.HIGHEST_PROTOCOL)
-
-with open("artists_folder/ru_artists.pkl", "rb") as f:
-    us_artists_dict = pickle.load(f)
-
-print(us_artists_dict['Rap/Hip Hop'][0].get_albums())
