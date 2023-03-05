@@ -130,3 +130,7 @@ dmypy.json
 
 # JetBrains stuff
 .idea
+.DS_Store
+
+# images
+data/album_covers/
